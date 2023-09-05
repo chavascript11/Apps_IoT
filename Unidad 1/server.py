@@ -23,9 +23,9 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
         global contador
 
         if(body_json['action'] == 'asc'):
-            contador += 1
-        elif(body_json[action]== 'desc'):
-            contador -= 1
+            contador += body_json['quantity']
+        elif(body_json['action']== 'desc'):
+            contador -= body_json['quantity']
 
         # Print the complete HTTP request
         print("\n----- Incoming POST Request -----")

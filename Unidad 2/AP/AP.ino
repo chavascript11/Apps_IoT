@@ -1,6 +1,6 @@
-#include <WiFi.h>
+#include <ESP8266WiFi.h>
 
-const char *ssid = "chava_wifi";
+const char *ssid = "deepweb";
 const char *password = "password";
 
 void setup()

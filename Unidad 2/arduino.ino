@@ -1,12 +1,12 @@
-#include <ESP8266WiFi.h>
-#include <ESP8266HTTPClient.h>
+#include <WiFi.h>
+#include <HTTPClient.h>
 
 // Replace with your network credentials
-const char* ssid = "MSI 7448";
-const char* password = "12345678";
+const char* ssid = "INFINITUME7D8";
+const char* password = "kasumikasumi";
 
 // Your local server address
-const char* serverAddress = "192.168.137.1:7800";
+const char* serverAddress = "http://192.168.1.77:7800";
 
 // Pin definitions
 const int buttonD4 = 36;

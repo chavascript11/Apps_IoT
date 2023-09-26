@@ -1,12 +1,12 @@
-#include <ESP8266WiFi.h>
-#include <ESP8266HTTPClient.h>
+#include <WiFi.h>
+#include <HTTPClient.h>
 
 // Replace with your network credentials
-const char *ssid = "MSI 7448";
-const char *password = "12345678";
+const char *ssid = "INFINITUME7D8";
+const char *password = "kasumikasumi";
 
 // Replace with the URL of the resource you want to get
-const char *url = "http://caf5-187-190-35-202.ngrok-free.app/led";
+const char *url = "http://192.168.1.77:7800/led";
 
 void setup()
 {

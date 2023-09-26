@@ -3,7 +3,7 @@ import json
 import os
 
 contador = 11
-
+led = False
 
 
 
@@ -22,7 +22,7 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
     # Set the response headers
     print(self.path)
 
-    led = False
+    
     if self.path == "/":
       try:
         # Get the absolute path to the HTML file
@@ -39,6 +39,7 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
       self.wfile.write(json.dumps({"contador": contador}).encode())
 
     elif self.path == "/led":
+      global led
       self._set_response()
       self.wfile.write(json.dumps({"status": led}).encode())
 

@@ -1,62 +1,68 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <ArduinoJson.h>
 
-// Replace with your network credentials
 const char *ssid = "INFINITUME7D8";
 const char *password = "kasumikasumi";
 
-// Replace with the URL of the resource you want to get
-const char *url = "http://192.168.1.77:7800/led";
+String serverLed = "http://192.168.1.73:7800/led"; // Endpoint para obtener el estado del LED
+
+int ledPin = 2; // Pin al que está conectado el LED
+
+void getLedState()
+{
+  HTTPClient http;
+  http.begin(serverLed);
+
+  int httpResponseCode = http.GET();
+
+  if (httpResponseCode == 200)
+  {
+    // Leer el JSON de la respuesta
+    String payload = http.getString();
+    DynamicJsonDocument jsonDoc(1024);
+    deserializeJson(jsonDoc, payload);
+
+    // Obtener el estado del LED desde el JSON
+    bool ledState = jsonDoc["status"];
+    
+    // Actualizar el estado del LED en la placa Arduino
+    digitalWrite(ledPin, ledState ? HIGH : LOW);
+
+    Serial.print("Estado del LED: ");
+    Serial.println(ledState);
+  }
+  else
+  {
+    Serial.print("Error al obtener el estado del LED. Código de respuesta: ");
+    Serial.println(httpResponseCode);
+  }
+
+  http.end();
+}
 
 void setup()
 {
   Serial.begin(115200);
 
-  // Connect to the Wi-Fi network
-  Serial.println("Connecting to Wi-Fi...");
+  pinMode(ledPin, OUTPUT);
+  digitalWrite(ledPin, LOW); // Apagar el LED al inicio
+
   WiFi.begin(ssid, password);
+  Serial.println("Connecting");
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(500);
     Serial.print(".");
   }
-  Serial.println("Connected!");
+  Serial.println("");
+  Serial.print("Connected to WiFi network with IP Address: ");
+  Serial.println(WiFi.localIP());
 }
 
 void loop()
 {
-  // Create a WiFiClient object
-  WiFiClient client;
-
-  // Create an HTTPClient object and pass the WiFiClient
-  HTTPClient http;
-  http.begin(client, url);
-
-  // Send the request
-  int httpCode = http.GET();
-
-  // Check the response code
-  if (httpCode > 0)
-  {
-    // Success!
-    Serial.println("HTTP GET request successful!");
-
-    // Get the response payload
-    String payload = http.getString();
-
-    // Print the payload to the serial monitor
-    Serial.println(payload);
-  }
-  else
-  {
-    // Error!
-    Serial.println("HTTP GET request failed!");
-    Serial.println(httpCode);
-  }
-
-  // Close the HTTP connection
-  http.end();
-
-  // Delay for 1 second
-  delay(1000);
+  // Obtener el estado actual del LED desde el servidor y actualizar el LED en la placa Arduino
+  getLedState();
+  delay(1000); // Esperar 1 segundos antes de volver a consultar el estado
 }

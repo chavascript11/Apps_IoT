@@ -8,6 +8,7 @@ const char *password = "itcolima6"; // Enter WiFi password
 
 // MQTT Broker
 const char *mqtt_broker = "vd31ddd5.ala.us-east-1.emqxsl.com";   // broker address
+//c098ae50.ala.us-east-1.emqxsl.com
 const char *topic = "test";      // define topic
 const char *mqtt_username = "esp32"; // username for authentication
 const char *mqtt_password = "1234"; // password for authentication
